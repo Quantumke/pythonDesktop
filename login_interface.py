@@ -100,3 +100,39 @@ class LoginPage(ttk.Frame):
                 self.status_label['text'] = "Wrong username or password"
         result = users.select(and_(users.c.username == u, users.c.password == p))
         run(result)
+    class PageOne(ttk.Frame):
+
+    def __init__(self, parent, controller):
+        ttk.Frame.__init__(self, parent)
+        label = ttk.Label(self, text="Page One!!!", font=LARGE_FONT)
+        label.pack(pady=10,padx=10)
+
+        button1 = ttk.Button(self, text="Back to Home",
+                            command=lambda: controller.show_frame(LoginPage))
+        button1.pack()
+
+        button2 = ttk.Button(self, text="Page Two",
+                            command=lambda: controller.show_frame(PageTwo))
+        button2.pack()
+
+
+class PageTwo(ttk.Frame):
+
+    def __init__(self, parent, controller):
+        ttk.Frame.__init__(self, parent)
+        self.homegui()
+    def homegui(self):
+        self.grid(column=0, row=0, sticky='nsew')
+        root=tkinter.Tk()
+        ttk.Label(self, text='Page 2').grid(column=0, row=0,
+                                           columnspan=4)
+        # menu=Menu(root)
+        # root.config(menu=menu)
+        # menubar=ttk.Menu(menu)
+        # menubar.add_command(label="File", command="newfile")
+        # menubar.add_command(label="Edit", command="Help")
+        # menubar.add_command(label="Exit", command=root.quit)
+
+
+app = GuiInit()
+app.mainloop()
