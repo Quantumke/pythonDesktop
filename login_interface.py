@@ -71,3 +71,32 @@ class LoginPage(ttk.Frame):
 
         for child in self.winfo_children():
             child.grid_configure(padx=5, pady=5)
+
+        def login(self):
+        u = str(self.username.get())
+        p = str(self.password.get())
+        engine = create_engine("postgresql://root:master12!@localhost:5432/desktopsoftware")
+        connection = engine.connect()
+        engine.echo = True
+        metadata.bind = engine
+        users = Table('users', metadata, autoload=True)
+        def destroy_window(parent, self):
+            parent.destroy()
+            self.destroy()
+
+        def run(stmt):
+            rs = stmt.execute()
+            for row in rs:
+                username = row.username
+                password = row.password
+                list = [username, password]
+                success = len(list)
+                Session = sessionmaker(bind=engine)
+                session = Session()
+                self.status_label['text'] = "Login successful!"
+                self.submit_button['command'] = destroy_window(self,self)
+                break
+            else:
+                self.status_label['text'] = "Wrong username or password"
+        result = users.select(and_(users.c.username == u, users.c.password == p))
+        run(result)
