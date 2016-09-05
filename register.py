@@ -54,6 +54,31 @@ class GuiInit(tkinter.Tk):
 
         for child in self.winfo_children():
             child.grid_configure(padx=5, pady=5)
+        def register(self):
+        u=str(self.username.get())
+        e=str(self.email.get())
+        p=str(self.password.get())
+        engine=create_engine("postgresql://root:master12!@localhost:5432/i254")
+        connection=engine.connect()
+        engine.echo=True
+        metadata.bind=engine
+        users = Table('auth_user', metadata, autoload=True)
+        last_login=datetime.now()
+        is_superuser=False
+        first_name="None"
+        last_name="None"
+        is_staff=False
+        is_active=True
+        date_joined=datetime.now()
+
+        ins=users.insert().values(username=u, email=e, password=p,last_login=last_login,
+                                  is_superuser=is_superuser,first_name=first_name,
+                                  last_name=last_name,is_staff=is_staff,is_active=is_active,
+                                  date_joined=date_joined)
+        results=connection.execute(ins)
+        self.status_label['text']="Registration Succesful!"
+
+
 
 class Home(ttk.Frame):
 
